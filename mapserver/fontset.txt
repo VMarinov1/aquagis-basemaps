@@ -1,0 +1,4 @@
+calibri-bold                    calibri-bold.ttf
+calibri-bold-italic             calibri-bold-italic.ttf
+calibri-italic                  calibri-italic.ttf
+calibri                         calibri-regular.ttf

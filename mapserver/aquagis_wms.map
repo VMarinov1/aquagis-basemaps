@@ -1,0 +1,369 @@
+MAP
+    NAME "AQUAGIS CADZEM WMS Server"
+    EXTENT 2554400 5240000 2558400 5244800
+    SIZE 256 256
+    FONTSET fontset.txt
+
+    OUTPUTFORMAT
+        NAME "png"
+        DRIVER AGG/PNG
+        MIMETYPE "image/png"
+        IMAGEMODE RGBA
+        EXTENSION "png"
+        FORMATOPTION "GAMMA=0.75"
+        TRANSPARENT OFF
+        FORMATOPTION "TRANSPARENT_FORMAT=png"
+    END
+
+    IMAGETYPE "png"
+    IMAGECOLOR 255 255 255
+    TRANSPARENT OFF
+
+    WEB
+        TEMPLATE 'index.html'
+        IMAGEPATH '/mapslabio/mapserver/tmp/'
+        IMAGEURL '/tmp/'
+        METADATA
+            "wms_title"           "AQUAGIS ZEM CAD TEXTS WMS SERVICE"
+            "wms_onlineresource"  "http://62.73.121.212:8888/cgi-bin/mapserv?map=/mapslabio/mapserver/aquagis_wms.map"
+            "wms_srs"             "EPSG:4326 EPSG:3857 EPSG:32635 EPSG:32634 EPSG:3575 EPSG:7801 EPSG:7796 EPSG:7803 EPSG:7804"
+            "ows_enable_request"  "*"
+            "wms_transparent"     "TRUE"
+        END
+    END
+
+    PROJECTION
+        "init=epsg:3857"
+    END
+
+    SYMBOL
+        TYPE ellipse
+        POINTS 1 1 END
+        NAME "circle"
+    END
+
+
+    LAYER
+        NAME "annotations"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_annos where lower(layer) like 'layer%') as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        LABELITEM "txtmemo"
+        METADATA
+            "wms_title" "annotations"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            MAXSCALEDENOM 6000
+            # MINSCALEDENOM 50
+            #STYLE
+            #    SYMBOL "circle"
+            #    SIZE 4
+            #    COLOR 100 100 100
+            #END
+            LABEL
+                COLOR  25 25 25
+                # OUTLINECOLOR 255 255 255
+                ANTIALIAS TRUE
+                FONT calibri
+                TYPE truetype
+                SIZE [txt_height]
+                # ALIGN CENTER
+                ANGLE [txtangle]
+                POSITION AUTO
+                PARTIALS FALSE
+            END
+        END
+    END
+
+    LAYER
+        NAME "ANNOS"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        #CONNECTION "host=192.168.1.124 dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from dwg_annos using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        LABELITEM "txtmemo"
+        METADATA
+            "wms_title" "ANNOS"
+            "wms_srs" "EPSG:4326 EPSG:3857 EPSG:32635"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 12000
+            # MINSCALEDENOM 50
+            #STYLE
+            #    SYMBOL "circle"
+            #    SIZE 4
+            #    COLOR 100 100 100
+            #END
+            LABEL
+                COLOR  25 25 25
+                # OUTLINECOLOR 255 255 255
+                ANTIALIAS TRUE
+                FONT calibri
+                TYPE truetype
+                SIZE [txt_height]
+                #MINSIZE 8
+                #MAXSIZE 20.0
+                # ALIGN CENTER
+                ANGLE [txtangle]
+                POSITION AUTO
+                PARTIALS FALSE
+            END
+        END
+    END
+
+    LAYER
+        NAME "annos_water"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_annos where lower(layer) like 'vod%') as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        LABELITEM "txtmemo"
+        METADATA
+            "wms_title"          "annos_water"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            MAXSCALEDENOM 10000
+            # MINSCALEDENOM 50
+            #STYLE
+            #    SYMBOL "circle"
+            #    SIZE 4
+            #    COLOR 100 100 100
+            #END
+            LABEL
+                COLOR  0 0 255
+                # OUTLINECOLOR 255 255 255
+                ANTIALIAS TRUE
+                FONT calibri-bold
+                TYPE truetype
+                SIZE [txt_height]
+                # ALIGN CENTER
+                ANGLE [txtangle]
+                POSITION AUTO
+                PARTIALS FALSE
+            END
+        END
+    END
+
+    LAYER
+        NAME "annos_sewer"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_annos where lower(layer) like 'kanal%') as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        LABELITEM "txtmemo"
+        METADATA
+            "wms_title"          "annos_sewer"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            MAXSCALEDENOM 10000
+            # MINSCALEDENOM 50
+            #STYLE
+            #    SYMBOL "circle"
+            #    SIZE 4
+            #    COLOR 100 100 100
+            #END
+            LABEL
+                COLOR  124 0 0
+                # OUTLINECOLOR 255 255 255
+                ANTIALIAS TRUE
+                FONT calibri-bold
+                TYPE truetype
+                SIZE [txt_height]
+                # ALIGN CENTER
+                ANGLE [txtangle]
+                POSITION AUTO
+                PARTIALS FALSE
+            END
+        END
+    END
+
+    LAYER
+        NAME "lines"
+        TYPE line
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from dwg_lines using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROJECTION
+            "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "lines"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 25000
+            # MINSCALEDENOM 50
+            STYLE
+                width 0.15
+                COLOR 50 50 50
+            END
+        END
+    END
+
+    LAYER
+        NAME "contours"
+        TYPE line
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_lines where layer in ('LAYER025', 'LAYER026', 'LAYER027', 'LAYER028')) as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROJECTION
+            "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "contours"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 25000
+            # MINSCALEDENOM 50
+            STYLE
+                width 0.8
+                COLOR 164 24 24
+            END
+        END
+    END
+
+    LAYER
+        NAME "limits"
+        TYPE line
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_lines where layer in ('LAYER086', 'LAYER087', 'LAYER088', 'LAYER089')) as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROJECTION
+            "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "limits"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 25000
+            # MINSCALEDENOM 50
+            STYLE
+                width 1.2
+                COLOR 10 10 10
+            END
+        END
+    END
+
+    LAYER
+        NAME "bldgs"
+        TYPE line
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_lines where layer in ('LAYER003', 'LAYER004')) as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROJECTION
+            "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "bldgs"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 25000
+            # MINSCALEDENOM 50
+            STYLE
+                width 2
+                COLOR 150 150 150
+            END
+        END
+    END
+
+    LAYER
+        NAME "regulacia"
+        TYPE line
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_lines where layer in ('LAYER032', 'LAYER033', 'LAYER034', 'LAYER035', 'L2')) as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROJECTION
+            "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "regulacia"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 25000
+            # MINSCALEDENOM 50
+            STYLE
+                width 1
+                COLOR 255 0 0
+            END
+        END
+    END
+
+    LAYER
+        NAME "sewer"
+        TYPE line
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_lines where layer like 'KANAL%') as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROJECTION
+            "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "sewer"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 25000
+            # MINSCALEDENOM 50
+            STYLE
+                width 2
+                COLOR 164 24 24
+            END
+        END
+    END
+
+    LAYER
+        NAME "water"
+        TYPE line
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=pernik_data user=gis password=gis port=5432"
+        DATA "geom from (select * from dwg_lines where lower(layer) like 'vod%') as s using unique id srid=3857"
+        PROCESSING "CLOSE_CONNECTION=DEFER"
+        PROJECTION
+            "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "water"
+            "wms_enable_request" "*"
+        END
+        CLASS
+            # MAXSCALEDENOM 25000
+            # MINSCALEDENOM 50
+            STYLE
+                width 1.2
+                COLOR 0 0 255
+            END
+        END
+    END
+
+END

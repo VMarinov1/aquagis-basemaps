@@ -1,0 +1,66 @@
+MAP
+    NAME "AQUAGIS Shumen WMS Server"
+    EXTENT 2942000 5334000 3080000 5415000
+    SIZE 256 256
+    FONTSET fontset.txt
+
+    OUTPUTFORMAT
+        NAME "png"
+        DRIVER AGG/PNG
+        MIMETYPE "image/png"
+        IMAGEMODE RGBA
+        EXTENSION "png"
+        FORMATOPTION "GAMMA=0.75"
+        TRANSPARENT OFF
+        FORMATOPTION "TRANSPARENT_FORMAT=png"
+    END
+
+    IMAGETYPE "png"
+    IMAGECOLOR 255 255 255
+    TRANSPARENT OFF
+
+    WEB
+        TEMPLATE 'index.html'
+        IMAGEPATH '/mapslabio/mapserver/tmp/'
+        IMAGEURL '/tmp/'
+        METADATA
+            "wms_title"           "AQUAGIS Shumen WMS SERVICE"
+            "wms_onlineresource"  "http://62.73.121.212:8888/cgi-bin/mapserv?map=/mapslabio/mapserver/aquagis_shumen.map"
+            "wms_srs"             "EPSG:4326 EPSG:3857 EPSG:32635 EPSG:32634 EPSG:3575 EPSG:7801 EPSG:7796 EPSG:7803 EPSG:7804"
+            "ows_enable_request"  "*"
+            "wms_transparent"     "TRUE"
+        END
+    END
+
+    PROJECTION
+        "init=epsg:3857"
+    END
+
+    LAYER
+        NAME "shumen_layer1"
+        TYPE RASTER
+        STATUS ON
+        TILEINDEX "/mapslab/aquagis_data/shumen_rasters/aq_full_shu.shp"
+        PROJECTION
+          "init=epsg:3857"
+        END
+        METADATA
+            "wms_title" "Shumen Layer1"
+            "wms_enable_request" "*"
+        END
+    END
+    
+    LAYER
+        NAME "shumen_layer2"
+        TYPE RASTER
+        STATUS ON
+        TILEINDEX "/mapslab/aquagis_data/shumen_rasters/aq_full_shu_lyr1.shp"
+        PROJECTION
+          "init=epsg:3857"
+        END
+        METADATA
+          "wms_title" "Shumen Layer2"
+          "wms_enable_requiest" "*"
+        END
+    END
+END
